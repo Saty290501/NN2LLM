@@ -2,51 +2,86 @@
 NN2LLM - Value Module
 =====================
 
-This module defines the core `Value` class, which will become the
-foundation of the automatic differentiation engine used throughout
-the NN2LLM project.
+This module defines the fundamental Value class used to build
+computational graphs for automatic differentiation.
 
-Unlike Python's built-in numeric types (`int` and `float`), a `Value`
-object is designed to store not only a numerical value but also the
-information required to build a computational graph.
+Unlike Python's built-in numeric types, a Value object stores
+both numerical data and the metadata required to compute gradients.
 
-In later milestones, this class will support:
+Author:
+    Satyen Chaudhari
 
-- Computational graph construction
-- Gradient tracking
-- Reverse-mode automatic differentiation (Backpropagation)
-- Mathematical operations such as:
-    - Addition
-    - Multiplication
-    - Subtraction
-    - Division
-    - Power
-- Activation functions:
-    - ReLU
-    - Tanh
-    - Sigmoid
-    - Exp
-
-Current Status
---------------
-This file currently contains only the project documentation.
-The implementation of the `Value` class will be added incrementally
-as we progress through the NN2LLM learning roadmap.
-
-Author
-------
-Satyen Chaudhari
-
-Project
--------
-NN2LLM
-(Building Neural Networks to Large Language Models from Scratch)
-
-Inspired by
------------
-Andrej Karpathy's "Neural Networks: Zero to Hero"
-
-Version
--------
-0.1.0
+Inspired by:
+    Andrej Karpathy's "Neural Networks: Zero to Hero"
 """
+
+from __future__ import annotations
+
+from typing import Callable
+
+
+class Value:
+    """
+    Represents a single node in a computational graph.
+
+    A Value object stores a numerical value along with all the
+    information required for automatic differentiation.
+    """
+
+    def __init__(
+        self,
+        data: float,
+        parents: tuple["Value", ...] = (),
+        operation: str = "",
+        label: str = "",
+    ) -> None:
+        """
+        Initialize a Value object.
+
+        Parameters
+        ----------
+        data:
+            Numerical value stored by the node.
+
+        parents:
+            Parent nodes that produced this Value.
+
+        operation:
+            Mathematical operation responsible for creating
+            this Value.
+
+        label:
+            Optional human-readable identifier useful for
+            debugging and visualization.
+        """
+
+        # Actual numerical value.
+        self.data = float(data)
+
+        # Gradients accumulate during backpropagation.
+        self.grad = 0.0
+
+        # Parent nodes in the computational graph.
+        self.parents = parents
+
+        # Operation that created this node.
+        self.operation = operation
+
+        # Friendly name for debugging.
+        self.label = label
+
+        # Placeholder function.
+        # This will later contain the local gradient computation.
+        self._backward: Callable[[], None] = lambda: None
+
+    def __repr__(self) -> str:
+        """
+        Return a readable representation of the object.
+        """
+
+        return (
+            f"Value("
+            f"data={self.data}, "
+            f"grad={self.grad}, "
+            f"operation='{self.operation}')"
+        )   
