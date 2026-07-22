@@ -2,8 +2,6 @@
 
 > Building Neural Networks to Large Language Models from scratch.
 
-## 🎯 Goal
-
 This repository documents my journey of learning and implementing Deep Learning concepts from first principles.
 
 Rather than relying on high-level frameworks, every major component will be implemented step by step to understand how modern AI systems work internally.
