@@ -74,6 +74,79 @@ class Value:
         # This will later contain the local gradient computation.
         self._backward: Callable[[], None] = lambda: None
 
+
+    def __add__(self, other: "Value") -> "Value":
+        """
+        Add two Value objects.
+
+        Instead of returning only the numerical result,
+        we create a new Value node that remembers
+        how it was produced.
+        """
+
+        return Value(
+            data=self.data + other.data,
+            parents=(self, other),
+            operation="+",
+        )
+
+    def __mul__(self, other: "Value") -> "Value":
+        """
+        Multiply two Value objects.
+
+        Instead of returning only the numerical result,
+        we create a new Value node that remembers
+        how it was produced.
+        """
+
+        return Value(
+            data=self.data * other.data,
+            parents=(self, other),
+            operation="*",
+        )
+
+    def __sub__(self, other: "Value") -> "Value":
+        """
+        Subtract two Value objects.
+
+        Creates a new Value node representing the subtraction
+        operation while preserving graph relationships.
+        """
+
+        return Value(
+            data=self.data - other.data,
+            parents=(self, other),
+            operation="-",
+        )
+
+    def __truediv__(self, other: "Value") -> "Value":
+        """
+        Divide two Value objects.
+
+        Creates a new Value node representing the division
+        operation.
+        """
+
+        if other.data == 0:
+            raise ZeroDivisionError("Division by zero is not allowed.")
+
+        return Value(
+            data=self.data / other.data,
+            parents=(self, other),
+            operation="/",
+        )
+
+    def __pow__(self, exponent: int | float) -> "Value":
+        """
+        Raise the Value object to a numerical power.
+        """
+
+        return Value(
+            data=self.data ** exponent,
+            parents=(self,),
+            operation=f"**{exponent}",
+        )
+
     def __repr__(self) -> str:
         """
         Return a readable representation of the object.
