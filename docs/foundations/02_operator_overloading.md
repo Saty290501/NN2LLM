@@ -2,13 +2,7 @@
 
 ## What is Operator Overloading?
 
-Python allows classes to redefine the behavior of operators such as:
-
-- +
-- -
-- *
-- /
-- **
+Python allows classes to redefine the behavior of operators such as: +, -, *, /, **
 
 Instead of using primitive numbers, our `Value` class behaves like a number while recording the computation.
 

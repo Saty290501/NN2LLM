@@ -74,6 +74,18 @@ class Value:
         # This will later contain the local gradient computation.
         self._backward: Callable[[], None] = lambda: None
 
+    def __repr__(self) -> str:
+        """
+        Return a readable representation of the object.
+        """
+
+        return (
+            f"Value("
+            f"data={self.data}, "
+            f"grad={self.grad}, "
+            f"operation='{self.operation}')"
+        ) 
+
 
     def __add__(self, other: "Value") -> "Value":
         """
@@ -147,14 +159,4 @@ class Value:
             operation=f"**{exponent}",
         )
 
-    def __repr__(self) -> str:
-        """
-        Return a readable representation of the object.
-        """
-
-        return (
-            f"Value("
-            f"data={self.data}, "
-            f"grad={self.grad}, "
-            f"operation='{self.operation}')"
-        )   
+      
